@@ -796,6 +796,8 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
                 }
                 
                 _isDragging = false
+                
+                delegate?.chartViewDidEndPanning?(self)
             }
             if highlightPerDragEnabled {
                 let h = getHighlightByTouchPoint(recognizer.location(in: self))
@@ -811,7 +813,6 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
                 _outerScrollView?.nsuiIsScrollEnabled = true
                 _outerScrollView = nil
             }
-            delegate?.chartViewDidEndPanning?(self)
         }
     }
     
