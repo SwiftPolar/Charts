@@ -677,7 +677,13 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             stopDeceleration()
             
             if _data === nil || !self.isDragEnabled
-            { // If we have no data, we have nothing to pan and no data to highlight
+            {
+                // Should check if highlight is enabled, if so we want to handle it later
+                if self.isHighlightPerDragEnabled {
+                    _isDragging = false
+                }
+                
+                // If we have no data, we have nothing to pan and no data to highlight
                 return
             }
             
@@ -730,7 +736,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
                 _isDragging = false
             }
         }
-        else if recognizer.state == NSUIGestureRecognizerState.changed
+        else if recognizer.state == ysp.changed
         {
             if _isDragging
             {
@@ -880,7 +886,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             if _data === nil || (!isDragEnabled && !self.isHighlightPerDragEnabled) ||
                 (self.hasNoDragOffset && self.isFullyZoomedOut && !self.isHighlightPerDragEnabled) ||
                 (!_dragYEnabled && abs(velocity.y) > abs(velocity.x)) ||
-                (!_dragXEnabled && abs(velocity.y) < abs(velocity.x))
+                (!_dragXEnabled && !self.isHighlightPerDragEnabled && abs(velocity.y) < abs(velocity.x))
             {
                 return false
             }
